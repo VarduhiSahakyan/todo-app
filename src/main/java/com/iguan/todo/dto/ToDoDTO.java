@@ -19,7 +19,4 @@ public class ToDoDTO {
     @Setter
     private Status status;
 
-    public void setName(String name) {
-        this.name = name;
-    }
 }

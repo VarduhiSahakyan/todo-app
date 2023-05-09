@@ -9,6 +9,7 @@ import com.iguan.todo.repository.ToDoRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@CacheConfig(cacheNames = "todos")
 public class ToDoService {
 
     private final ToDoRepository repository;
@@ -43,14 +45,12 @@ public class ToDoService {
 
     @Transactional
     public void addToDo(ToDoDTO toDoDTO) {
-        isTodoExist(toDoDTO);
         repository.save(mapper.convertToEntity(toDoDTO, ToDo.class));
     }
 
     @Transactional
-    public ToDoDTO updateTodoFields(ToDoDTO toDoDTO){
-        ToDo todo = repository.findToDoById(toDoDTO.getId());
-        Integer id = toDoDTO.getId();
+    public ToDoDTO updateTodoFields(Integer id, ToDoDTO toDoDTO){
+        ToDo todo = repository.findToDoById(id);
         todoNotFound(id);
         todo.setPriority(toDoDTO.getPriority());
         todo.setStatus(toDoDTO.getStatus());
@@ -62,14 +62,6 @@ public class ToDoService {
     public void deleteToDo(Integer id) {
         todoNotFound(id);
         repository.deleteById(id);
-    }
-
-    public void isTodoExist(ToDoDTO DTO) {
-        if (repository.findById(DTO.getId()).isPresent()) {
-            logger.error("This todo already exists!");
-            logger.debug("This todo already exists: {}", DTO.getId());
-            throw new TodoAlreadyExistsException("Todo already exist");
-        }
     }
 
     public void todoNotFound(Integer id) {

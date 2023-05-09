@@ -9,9 +9,10 @@ package com.iguan.todo.domain;
 @Entity
 @Table(name = "todo")
 public class ToDo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column
