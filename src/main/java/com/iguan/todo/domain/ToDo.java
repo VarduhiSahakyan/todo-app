@@ -19,11 +19,12 @@ public class ToDo {
     private String name;
 
     @Setter
-    @Column
-    private int priority;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
 
     @Setter
-    @Column
-    private String status;
-
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }
