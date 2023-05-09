@@ -2,11 +2,14 @@ package com.iguan.todo.service;
 
 import com.iguan.todo.domain.ToDo;
 import com.iguan.todo.dto.ToDoDTO;
+import com.iguan.todo.exceprions.TodoAlreadyExistsException;
+import com.iguan.todo.exceprions.TodoNotFoundException;
 import com.iguan.todo.mapper.Mapper;
 import com.iguan.todo.repository.ToDoRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -14,12 +17,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @RequiredArgsConstructor
 @Service
 public class ToDoService {
 
     private final ToDoRepository repository;
     private final Mapper mapper;
+    private Logger logger = LoggerFactory.getLogger(ToDoService.class);
 
     @Transactional(readOnly = true)
     @Cacheable
@@ -30,37 +35,49 @@ public class ToDoService {
 
     @Transactional(readOnly = true)
     @Cacheable
-    public ToDoDTO getToDoById(Integer id) throws ChangeSetPersister.NotFoundException {
+    public ToDoDTO getToDoById(Integer id) {
         ToDo todo = repository.findToDoById(id);
-        if (todo == null)
-            throw new ChangeSetPersister.NotFoundException();
+        todoNotFound(id);
         return mapper.convertToDto(todo, ToDoDTO.class);
     }
 
     @Transactional
     public void addToDo(ToDoDTO toDoDTO) {
+        isTodoExist(toDoDTO);
         repository.save(mapper.convertToEntity(toDoDTO, ToDo.class));
     }
 
     @Transactional
-    public ToDoDTO updateTodoFields(ToDoDTO toDoDTO) throws ChangeSetPersister.NotFoundException {
+    public ToDoDTO updateTodoFields(ToDoDTO toDoDTO){
+        ToDo todo = repository.findToDoById(toDoDTO.getId());
         Integer id = toDoDTO.getId();
-        ToDo todo = repository.findToDoById(id);
-        if (todo == null)
-            throw new ChangeSetPersister.NotFoundException();
+        todoNotFound(id);
         todo.setPriority(toDoDTO.getPriority());
         todo.setStatus(toDoDTO.getStatus());
         repository.save(todo);
         return mapper.convertToDto(todo, ToDoDTO.class);
     }
 
-
     @Transactional
-    public void deleteToDo(Integer id) throws ChangeSetPersister.NotFoundException {
-        ToDo todo = repository.findToDoById(id);
-        if (todo == null)
-            throw new ChangeSetPersister.NotFoundException();
+    public void deleteToDo(Integer id) {
+        todoNotFound(id);
         repository.deleteById(id);
     }
 
+    public void isTodoExist(ToDoDTO DTO) {
+        if (repository.findById(DTO.getId()).isPresent()) {
+            logger.error("This todo already exists!");
+            logger.debug("This todo already exists: {}", DTO.getId());
+            throw new TodoAlreadyExistsException("Todo already exist");
+        }
+    }
+
+    public void todoNotFound(Integer id) {
+        ToDo todo = repository.findToDoById(id);
+        if (todo == null) {
+            logger.error("Todo not exist whit id!");
+            logger.debug("Todo not exist whit id: {}", id);
+            throw new TodoNotFoundException("Todo not exist");
+        }
+    }
 }

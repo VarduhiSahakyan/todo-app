@@ -3,9 +3,8 @@ package com.iguan.todo.controller;
 import com.iguan.todo.dto.ToDoDTO;
 import com.iguan.todo.service.ToDoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,31 +15,31 @@ public class ToDoController {
     private final ToDoService service;
 
     @GetMapping
-    public ResponseEntity<Page<ToDoDTO>> getAllToDos(
+    public Page<ToDoDTO> getAllToDos(
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer pageSize){
-        return ResponseEntity.ok(service.getAllToDos(page, pageSize));
+        return (service.getAllToDos(page, pageSize));
     }
 
     @GetMapping("/todos/{id}")
-    public ResponseEntity<ToDoDTO> getToDoById(@PathVariable Integer id) throws ChangeSetPersister.NotFoundException {
-        return ResponseEntity.ok(service.getToDoById(id));
+    public ToDoDTO getToDoById(@PathVariable Integer id){
+        return service.getToDoById(id);
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void addToDo(@RequestBody ToDoDTO todo){
         service.addToDo(todo);
-        ResponseEntity.ok();
     }
 
-    @PutMapping
-    public ResponseEntity<ToDoDTO> updateToDo(@RequestBody ToDoDTO todo) throws ChangeSetPersister.NotFoundException {
-        return ResponseEntity.ok(service.updateTodoFields(todo));
+    @PutMapping("/{id}")
+    public ToDoDTO updateToDo(@RequestBody ToDoDTO todo) {
+        return service.updateTodoFields(todo);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteToDo(@PathVariable Integer id) throws ChangeSetPersister.NotFoundException {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteToDo(@PathVariable Integer id){
         service.deleteToDo(id);
     }
-
 }

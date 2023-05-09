@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS todos;
+
+USE todos;
+CREATE TABLE todo (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255),
+  priority VARCHAR(25),
+  status VARCHAR(25),
+  PRIMARY KEY (id)
+);

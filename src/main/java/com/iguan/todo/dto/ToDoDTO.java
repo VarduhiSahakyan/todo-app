@@ -8,6 +8,7 @@ public class ToDoDTO {
 
     private Integer id;
 
+    @Setter
     private String name;
 
     @Setter
@@ -16,4 +17,7 @@ public class ToDoDTO {
     @Setter
     private String status;
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }
