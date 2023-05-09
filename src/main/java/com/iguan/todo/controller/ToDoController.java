@@ -17,18 +17,18 @@ public class ToDoController {
     @GetMapping
     public Page<ToDoDTO> getAllToDos(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer pageSize){
+            @RequestParam(defaultValue = "10") Integer pageSize) {
         return (service.getAllToDos(page, pageSize));
     }
 
     @GetMapping("/todos/{id}")
-    public ToDoDTO getToDoById(@PathVariable Integer id){
+    public ToDoDTO getToDoById(@PathVariable Integer id) {
         return service.getToDoById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addToDo(@RequestBody ToDoDTO todo){
+    public void addToDo(@RequestBody ToDoDTO todo) {
         service.addToDo(todo);
     }
 
@@ -39,7 +39,7 @@ public class ToDoController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteToDo(@PathVariable Integer id){
+    public void deleteToDo(@PathVariable Integer id) {
         service.deleteToDo(id);
     }
 }

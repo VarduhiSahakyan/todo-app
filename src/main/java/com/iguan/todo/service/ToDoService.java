@@ -49,7 +49,7 @@ public class ToDoService {
     }
 
     @Transactional
-    public ToDoDTO updateTodoFields(Integer id, ToDoDTO toDoDTO){
+    public ToDoDTO updateTodoFields(Integer id, ToDoDTO toDoDTO) {
         ToDo todo = repository.findToDoById(id);
         todoNotFound(id);
         todo.setPriority(toDoDTO.getPriority());
@@ -67,7 +67,7 @@ public class ToDoService {
     public void todoNotFound(Integer id) {
         ToDo todo = repository.findToDoById(id);
         if (todo == null) {
-            logger.error("Todo not exist whit id!");
+            logger.error("Todo not exist!");
             logger.debug("Todo not exist whit id: {}", id);
             throw new TodoNotFoundException("Todo not exist");
         }
