@@ -1,5 +1,7 @@
 package com.iguan.todo.dto;
 
+import com.iguan.todo.domain.Priority;
+import com.iguan.todo.domain.Status;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +13,9 @@ public class ToDoDTO {
     private String name;
 
     @Setter
-    private int priority;
+    private Priority priority;
 
     @Setter
-    private String status;
+    private Status status;
 
 }
