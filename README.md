@@ -1,7 +1,4 @@
 # todo-app
-start: 08.05.2023
-
-Tested on postman.
 
 Test Task
 
@@ -30,3 +27,67 @@ POST /todos
 PUT /todos/{id}
 
 DELETE /todos/{id}
+
+
+
+Sample Requests for use the API and provide a quick reference for testing different scenarios.
+
+
+Get all Todos
+URL: localhost:7777/todos
+Method: GET
+
+Response:
+JSON array of To-Do objects:
+[  {    "id": 1,   
+"name": "Buy groceries",    
+"priority": "HIGH",    
+"status": "OPEN"  }, 
+{    "id": 2,    
+"name": "Finish project",    
+"priority": "MEDIUM",    
+"status": "IN_PROGRESS"  },  
+...]
+
+
+Get Todo 
+URL: http://localhost:7777/todos/{id}
+Method: GET
+Response:
+JSON object containing the details of the Todo.
+
+Add a new Todo
+URL: localhost:7777/todos
+Method: POST
+
+Request Body
+{
+  "name": "Buy groceries",
+  "priority": "HIGH",
+  "status": "OPEN"
+}
+
+Response
+Status Code: 201 CREATED
+
+Update Todo
+URL localhost:7777/todos/{id}
+Method: PUT
+
+Request Body
+
+{
+    "priority": "HIGH",
+    "status": "OPEN"
+}
+
+Response
+JSON object that represents the updated ToDo object.
+
+
+Delete todo.
+URL localhost:7777/todos/{id}
+Method: DELETE
+
+Response
+Status Code 204 NO CONTENT.
