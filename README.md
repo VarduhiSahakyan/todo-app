@@ -1,6 +1,8 @@
 # todo-app
 start: 08.05.2023
 
+Tested on postman.
+
 Test Task
 
 A simple todo list restful api example built with Java Spring framework
