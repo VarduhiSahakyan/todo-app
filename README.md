@@ -1,7 +1,4 @@
 # todo-app
-start: 08.05.2023
-
-Tested on postman.
 
 Test Task
 
