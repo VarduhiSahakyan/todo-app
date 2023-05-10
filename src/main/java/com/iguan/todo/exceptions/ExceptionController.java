@@ -1,4 +1,4 @@
-package com.iguan.todo.exceprions;
+package com.iguan.todo.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

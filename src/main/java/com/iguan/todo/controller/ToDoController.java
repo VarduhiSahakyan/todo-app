@@ -1,6 +1,7 @@
 package com.iguan.todo.controller;
 
 import com.iguan.todo.dto.ToDoDTO;
+import com.iguan.todo.dto.ToDoUpdateDTO;
 import com.iguan.todo.service.ToDoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,7 @@ public class ToDoController {
     }
 
     @PutMapping("/{id}")
-    public ToDoDTO updateToDo(@PathVariable Integer id, @RequestBody ToDoDTO todo) {
+    public ToDoUpdateDTO updateToDo(@PathVariable Integer id, @RequestBody ToDoUpdateDTO todo) {
         return service.updateTodoFields(id, todo);
     }
 

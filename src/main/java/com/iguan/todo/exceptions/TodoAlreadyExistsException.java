@@ -1,4 +1,4 @@
-package com.iguan.todo.exceprions;
+package com.iguan.todo.exceptions;
 
 public class TodoAlreadyExistsException extends RuntimeException {
 

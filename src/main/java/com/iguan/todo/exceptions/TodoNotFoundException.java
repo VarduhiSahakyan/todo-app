@@ -1,4 +1,4 @@
-package com.iguan.todo.exceprions;
+package com.iguan.todo.exceptions;
 
 public class TodoNotFoundException extends RuntimeException {
 

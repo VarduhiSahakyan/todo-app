@@ -2,8 +2,8 @@ package com.iguan.todo.service;
 
 import com.iguan.todo.domain.ToDo;
 import com.iguan.todo.dto.ToDoDTO;
-import com.iguan.todo.exceprions.TodoAlreadyExistsException;
-import com.iguan.todo.exceprions.TodoNotFoundException;
+import com.iguan.todo.dto.ToDoUpdateDTO;
+import com.iguan.todo.exceptions.TodoNotFoundException;
 import com.iguan.todo.mapper.Mapper;
 import com.iguan.todo.repository.ToDoRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +38,7 @@ public class ToDoService {
     @Transactional(readOnly = true)
     @Cacheable
     public ToDoDTO getToDoById(Integer id) {
-        ToDo todo = repository.findToDoById(id);
-        todoNotFound(id);
-        return mapper.convertToDto(todo, ToDoDTO.class);
+        return mapper.convertToDto(findTodo(id), ToDoDTO.class);
     }
 
     @Transactional
@@ -49,27 +47,26 @@ public class ToDoService {
     }
 
     @Transactional
-    public ToDoDTO updateTodoFields(Integer id, ToDoDTO toDoDTO) {
-        ToDo todo = repository.findToDoById(id);
-        todoNotFound(id);
+    public ToDoUpdateDTO updateTodoFields(Integer id, ToDoUpdateDTO toDoDTO) {
+        ToDo todo = findTodo(id);
         todo.setPriority(toDoDTO.getPriority());
         todo.setStatus(toDoDTO.getStatus());
         repository.save(todo);
-        return mapper.convertToDto(todo, ToDoDTO.class);
+        return mapper.convertToDto(todo, ToDoUpdateDTO.class);
     }
 
     @Transactional
     public void deleteToDo(Integer id) {
-        todoNotFound(id);
+        findTodo(id);
         repository.deleteById(id);
     }
 
-    public void todoNotFound(Integer id) {
+    public ToDo findTodo(Integer id) {
         ToDo todo = repository.findToDoById(id);
         if (todo == null) {
             logger.error("Todo not exist!");
             logger.debug("Todo not exist whit id: {}", id);
             throw new TodoNotFoundException("Todo not exist");
-        }
+        } else return todo;
     }
 }

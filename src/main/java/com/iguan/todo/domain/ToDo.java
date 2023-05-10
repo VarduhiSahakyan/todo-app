@@ -1,5 +1,7 @@
 package com.iguan.todo.domain;
 
+import com.iguan.todo.enums.Priority;
+import com.iguan.todo.enums.Status;
 import lombok.Getter;
 import lombok.Setter;
 

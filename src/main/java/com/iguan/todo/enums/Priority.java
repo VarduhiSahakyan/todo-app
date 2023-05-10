@@ -1,4 +1,4 @@
-package com.iguan.todo.domain;
+package com.iguan.todo.enums;
 
 public enum Priority {
     TRIVIAL,

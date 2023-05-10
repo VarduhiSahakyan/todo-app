@@ -7,14 +7,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ToDoDTO {
+public class ToDoUpdateDTO {
 
     private Integer id;
-
-    private String name;
 
     private Priority priority;
 
     private Status status;
-
 }
